@@ -1,0 +1,246 @@
+package com.chay.jpa;
+
+import java.util.List;
+import java.util.Scanner;
+
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+
+import com.chay.jpa.dao.AppDao;
+import com.chay.jpa.entity.Course;
+import com.chay.jpa.entity.Instructor;
+import com.chay.jpa.entity.InstructorDetail;
+
+@SpringBootApplication
+public class Application {
+
+	public static void main(String[] args) {
+		SpringApplication.run(Application.class, args);
+	}
+	@Bean
+	public CommandLineRunner commandLineRunner(AppDao appDao)
+	{
+		
+		return runner->
+		{
+//			createInstructor(appDao);
+//			findInstructorById(appDao);
+//		    deleteInstructorById(appDao);
+//			findInstructorDetail(appDao);
+//			deleteInstructorDetailById(appDao);
+//			createInstructorWithCourse(appDao);
+//			findInstructorWithCourses(appDao);
+//			findCoursesForInstructor(appDao);
+//			findInstructorWithCourseJoinFetch(appDao);
+//			updateInstructor(appDao);
+//			updateCourse(appDao);
+//			deleteInstructor(appDao);
+			deleteCourse(appDao);
+		};
+		
+	}
+	private void deleteCourse(AppDao appDao) {
+		// TODO Auto-generated method stub
+		Scanner scan=new Scanner(System.in);
+		System.out.println("Enter the Course Id For deleting:");
+		int theId=scan.nextInt();
+		
+		appDao.deleteCourseById(theId);
+		
+		System.out.println("Done...!");
+		
+		
+	}
+	private void deleteInstructor(AppDao appDao) {
+		// TODO Auto-generated method stub
+		Scanner scan=new Scanner(System.in);
+		System.out.println("Enter the Id For deleting:");
+		int theId=scan.nextInt();
+		
+		appDao.deleteInstructorById(theId);
+		
+		System.out.println("Done...!");
+		
+		
+		
+	}
+	private void updateCourse(AppDao appDao) {
+		// TODO Auto-generated method stub
+		Scanner scan=new Scanner(System.in);
+		System.out.println("Enter the Id For Updating:");
+		int theId=scan.nextInt();
+		
+		System.out.println("Finding Course:"+theId);
+		
+		Course tempCourse=appDao.findCourseById(theId);
+		System.out.println("Enter The title for update...");
+		
+		String title=scan.next();
+		
+	
+		
+	    tempCourse.setTitle(title);
+		
+		appDao.update(tempCourse);
+		
+		System.out.println("Done..!");
+		
+	}
+	private void updateInstructor(AppDao appDao) {
+		// TODO Auto-generated method stub
+		Scanner scan=new Scanner(System.in);
+		System.out.println("Enter the Id For Updating:");
+		int theId=scan.nextInt();
+		
+		System.out.println("Finding Instructor:"+theId);
+		
+		Instructor tempInstructor=appDao.findInstructorById(theId);
+		
+		tempInstructor.setFirstName("kiran");
+		
+		appDao.update(tempInstructor);
+		
+		System.out.println("Done..!");
+		
+		
+		
+		
+	}
+	private void findInstructorWithCourseJoinFetch(AppDao appDao) {
+		// TODO Auto-generated method stub
+		Scanner scan=new Scanner(System.in);
+		System.out.println("Enter the Id For Retrieving:");
+		int theId=scan.nextInt();
+		
+		System.out.println("Find Instructor With Id:"+theId);
+		Instructor tempInstructor=appDao.findInstructorByIdJoinFetch(theId);
+		System.out.println("tempInstructor:"+tempInstructor);
+		System.out.println("Associated Instructor :"+tempInstructor.getCourses());
+		System.out.println("Done..!");
+		
+		
+	}
+	private void findCoursesForInstructor(AppDao appDao) {
+		// TODO Auto-generated method stub
+		Scanner scan=new Scanner(System.in);
+		System.out.println("Enter the Id For Retrieving:");
+		int theId=scan.nextInt();
+		
+		Instructor tempInstructor=appDao.findInstructorById(theId);
+		System.out.println("tempInstructor:"+tempInstructor);
+		
+		List<Course> courses=appDao.findCourseByInstructorId(theId);
+		
+		tempInstructor.setCourses(courses);
+		
+		System.out.println("Associate Courses:"+tempInstructor.getCourses());
+		
+		System.out.println("Done...!");
+		
+	}
+	private void findInstructorWithCourses(AppDao appDao) {
+		// TODO Auto-generated method stub
+		Scanner scan=new Scanner(System.in);
+		System.out.println("Enter the Id For Retrieving:");
+		int theId=scan.nextInt();
+		
+		System.out.println("Find Instructor With Id:"+theId);
+		Instructor tempInstructor=appDao.findInstructorById(theId);
+		System.out.println("tempInstructor:"+tempInstructor);
+		System.out.println("Associated Instructor :"+tempInstructor.getCourses());
+		System.out.println("Done..!");
+		
+		
+	}
+	private void createInstructorWithCourse(AppDao appDao) {
+		// TODO Auto-generated method stub
+		Instructor tempInstructor=new Instructor("chaitanya","chikkam","chaituchaiii9933@gmail.com");
+//		Instructor tempInstructor=new Instructor("Kiran","chikkam","kiranchaitanya393@gmail.com");
+		InstructorDetail tempInstructorDetail=new InstructorDetail(
+				"http://www.chaituchaiii.com/youtube", 
+				"Music");
+		tempInstructor.setInstructorDetail(tempInstructorDetail);
+		Course tempCourse1=new Course("Full Stack java Developement");
+		Course tempCourse2=new Course("React Js");
+		
+		tempInstructor.add(tempCourse1);
+		tempInstructor.add(tempCourse2);
+		
+		System.out.println("Instructor saving:"+tempInstructor);
+		
+		System.out.println("Couses:"+tempInstructor.getCourses());
+		
+		appDao.save(tempInstructor);
+		
+		System.out.println("Done...!");
+		
+		
+	}
+	private void deleteInstructorDetailById(AppDao appDao) {
+		// TODO Auto-generated method stub
+		Scanner scan=new Scanner(System.in);
+		System.out.println("Enter the Id For Deleting:");
+		int theId=scan.nextInt();
+		
+		appDao.deleteInstructorDetailById(theId);
+		 
+		System.out.println("Done...!");
+		
+	}
+	private void findInstructorDetail(AppDao appDao) {
+		// TODO Auto-generated method stub
+		Scanner scan=new Scanner(System.in);
+		System.out.println("Enter the Id For Retrieving:");
+		int theId=scan.nextInt();
+		
+		InstructorDetail tempDetail=appDao.findInstructorDetailById(theId);
+		
+		System.out.println("Instructor Detail:"+tempDetail);
+		
+		System.out.println("Associate Instructor:"+tempDetail.getInstructor());
+	
+		
+	}
+	private void deleteInstructorById(AppDao appDao) {
+		// TODO Auto-generated method stub
+		Scanner scan=new Scanner(System.in);
+		System.out.println("Enter the Id For Deleting:");
+		int theId=scan.nextInt();
+		
+		appDao.deleteById(theId);
+		
+		System.out.println("Deleted the Instructor....!!!");
+		
+		
+	}
+	private void findInstructorById(AppDao appDao) {
+		// TODO Auto-generated method stub
+		Scanner scan=new Scanner(System.in);
+		System.out.println("Enter the Id:");
+		int theId=scan.nextInt();
+		
+		System.out.println("Finding the Instructor By Id:"+theId);
+		
+		Instructor tempInstructor=appDao.findInstructorById(theId);
+		
+		System.out.println("Instructor Data:"+tempInstructor);
+		
+		System.out.println("Associated Instructor:"+tempInstructor.getInstructorDetail());
+		
+	}
+	private void createInstructor(AppDao appDao) {
+		Instructor tempInstructor=new Instructor("chaitanya","chikkam","chaituchaiii9933@gmail.com");
+//		Instructor tempInstructor=new Instructor("Kiran","chikkam","kiranchaitanya393@gmail.com");
+		InstructorDetail tempInstructorDetail=new InstructorDetail(
+				"http://www.chaituchaiii.com/youtube", 
+				"Music");
+		tempInstructor.setInstructorDetail(tempInstructorDetail);
+		
+		System.out.println("Saving Instructor:"+tempInstructor);
+		appDao.save(tempInstructor);
+		System.out.println("Done....!");
+	}
+
+}
